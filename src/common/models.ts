@@ -1,0 +1,10 @@
+import dotenv from "dotenv";
+import { anthropic } from "@ai-sdk/anthropic";
+import { openai } from "@ai-sdk/openai";
+dotenv.config();
+export const anthropicAiModelName = "claude-3-7-sonnet-latest";
+export const openaiAiModelName = "gpt-4.1-mini";
+
+export const vercelAnthropicAiModel = anthropic(anthropicAiModelName);
+export const vercelOpenaiAiModel = openai(openaiAiModelName);
+export const vercelOpenaiResponsesAiModel = openai.responses(openaiAiModelName);
