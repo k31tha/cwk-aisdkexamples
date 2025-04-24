@@ -31,7 +31,7 @@ pnpm install
 ```
 
 3. Set up your environment variables:
-   - Copy the `.env.example` file to `.env` (if it exists)
+   - create file `.env`
    - Add your API keys:
 
 ```env
