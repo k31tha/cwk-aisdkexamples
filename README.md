@@ -50,11 +50,28 @@ The project uses TypeScript and includes the following key dependencies:
 
 ## 📖 Usage
 
-Examples for different AI SDKs can be found in their respective directories. To run an example:
+Examples for different AI SDKs can be found in their respective directories. To run an example you can either run the script directly
 
 ```bash
 pnpm tsx path/to/example.ts [todo]
 ```
+
+or you can run using a supplied utility script
+
+```bash
+pnpm tsx run-example-script.ts <SDK> <DIR> [OPTIONS]
+```
+
+where:
+<SDK> SDK type to use (required):
+V - Vercel AI SDK
+A - Anthropic SDK
+O - OpenAI SDK
+
+<DIR>       Directory pattern (required):
+            Format: XX-YY (e.g., 01-01, 01-02)
+
+[OPTIONS] Additional arguments (optional) see README.md in directory for example for Options
 
 ## 📄 License
 
