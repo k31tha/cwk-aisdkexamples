@@ -1,9 +1,10 @@
 # CWK AI SDK Examples
 
-This repository contains example implementations and usage demonstrations for various AI SDKs, created as part of the Code with Keith (CWK) series.
+This repository contains example implementations and usage demonstrations for various AI SDKs, created as part of the Code with Keith (CWK) ai essential series.
 
 ## 🚀 Features
 
+- Examples using VercelAI SDK
 - Examples using OpenAI SDK
 - Examples using Anthropic SDK
 - TypeScript implementation
@@ -19,7 +20,7 @@ This repository contains example implementations and usage demonstrations for va
 1. Clone the repository:
 
 ```bash
-git clone [your-repo-url]
+git clone https://github.com/k31tha/cwk-aisdkexamples.git
 cd cwk-aisdkexamples
 ```
 
