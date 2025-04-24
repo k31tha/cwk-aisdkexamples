@@ -1,9 +1,10 @@
 # CWK AI SDK Examples
 
-This repository contains example implementations and usage demonstrations for various AI SDKs, created as part of the Code with Keith (CWK) series.
+This repository contains example implementations and usage demonstrations for various AI SDKs, created as part of the Code with Keith (CWK) ai essential series.
 
 ## 🚀 Features
 
+- Examples using VercelAI SDK
 - Examples using OpenAI SDK
 - Examples using Anthropic SDK
 - TypeScript implementation
@@ -19,7 +20,7 @@ This repository contains example implementations and usage demonstrations for va
 1. Clone the repository:
 
 ```bash
-git clone [your-repo-url]
+git clone https://github.com/k31tha/cwk-aisdkexamples.git
 cd cwk-aisdkexamples
 ```
 
@@ -30,7 +31,7 @@ pnpm install
 ```
 
 3. Set up your environment variables:
-   - Copy the `.env.example` file to `.env` (if it exists)
+   - create file `.env`
    - Add your API keys:
 
 ```env
@@ -49,11 +50,28 @@ The project uses TypeScript and includes the following key dependencies:
 
 ## 📖 Usage
 
-Examples for different AI SDKs can be found in their respective directories. To run an example:
+Examples for different AI SDKs can be found in their respective directories. To run an example you can either run the script directly
 
 ```bash
 pnpm tsx path/to/example.ts [todo]
 ```
+
+or you can run using a supplied utility script
+
+```bash
+pnpm tsx run-example-script.ts <SDK> <DIR> [OPTIONS]
+```
+
+where:
+<SDK> SDK type to use (required):
+V - Vercel AI SDK
+A - Anthropic SDK
+O - OpenAI SDK
+
+<DIR>       Directory pattern (required):
+            Format: XX-YY (e.g., 01-01, 01-02)
+
+[OPTIONS] Additional arguments (optional) see README.md in directory for example for Options
 
 ## 📄 License
 
