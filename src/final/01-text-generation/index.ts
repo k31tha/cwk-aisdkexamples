@@ -1,10 +1,21 @@
 import { generateTextWithVercelAiSdk } from "./vercel-ai-sdk";
+import { generateTextWithAnthropicAiSdk } from "./anthropic-ai-sdk";
 import { Prompts, parseTextMessages } from "../../common";
 
 export const runVercelAISdkExample = async (prompts: Prompts) => {
   console.log("\nRunning Vercel AI example:");
   try {
     await generateTextWithVercelAiSdk(prompts);
+    console.log("Vercel AI example completed successfully");
+  } catch (error) {
+    console.error("Vercel AI example failed:", error);
+    throw error;
+  }
+};
+export const runAnthropicAISdkExample = async (prompts: Prompts) => {
+  console.log("\nRunning Anthropic AI example:");
+  try {
+    await generateTextWithAnthropicAiSdk(prompts);
     console.log("Vercel AI example completed successfully");
   } catch (error) {
     console.error("Vercel AI example failed:", error);
@@ -21,7 +32,7 @@ async function main(prompts: Prompts, sampleType?: string) {
     //await runOpenAISdkExample(prompts);
     console.log("OpenAI example not implemented yet");
   } else if (sampleType === "anthropic-sdk") {
-    //await runAnthropicSdkExample(prompts);
+    await runAnthropicAISdkExample(prompts);
     console.log("Anthropic example not implemented yet");
   } else {
     console.error(`Unknown SDK type: ${sampleType}`);
