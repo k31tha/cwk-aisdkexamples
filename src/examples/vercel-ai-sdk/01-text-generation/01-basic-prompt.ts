@@ -14,8 +14,4 @@ const main = async () => {
   console.log(text);
 };
 
-// Get the prompt from environment variable or command line arguments
-const args = process.env.ORIGINAL_ARGS
-  ? JSON.parse(process.env.ORIGINAL_ARGS)
-  : process.argv.slice(2);
 main();
