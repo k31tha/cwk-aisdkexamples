@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export interface Message {
-  role: "user" | "assistant";
+  role: "user" | "assistant" | "system";
   content: string;
 }
 

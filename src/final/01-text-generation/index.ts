@@ -1,5 +1,6 @@
 import { generateTextWithVercelAiSdk } from "./vercel-ai-sdk";
 import { generateTextWithAnthropicAiSdk } from "./anthropic-ai-sdk";
+import { generateTextWithOpenAiSdk } from "./open-ai-sdk";
 import { Prompts, parseTextMessages } from "../../common";
 
 export const runVercelAISdkExample = async (prompts: Prompts) => {
@@ -16,9 +17,19 @@ export const runAnthropicAISdkExample = async (prompts: Prompts) => {
   console.log("\nRunning Anthropic AI example:");
   try {
     await generateTextWithAnthropicAiSdk(prompts);
-    console.log("Vercel AI example completed successfully");
+    console.log("Anthropic AI example completed successfully");
   } catch (error) {
-    console.error("Vercel AI example failed:", error);
+    console.error("Anthropic AI example failed:", error);
+    throw error;
+  }
+};
+export const runOpenAISdkExample = async (prompts: Prompts) => {
+  console.log("\nRunning Open AI example:");
+  try {
+    await generateTextWithOpenAiSdk(prompts);
+    console.log("Open AI example completed successfully");
+  } catch (error) {
+    console.error("Open AI example failed:", error);
     throw error;
   }
 };
@@ -29,11 +40,11 @@ async function main(prompts: Prompts, sampleType?: string) {
   if (sampleType === "vercel-ai-sdk") {
     await runVercelAISdkExample(prompts);
   } else if (sampleType === "openai-sdk") {
-    //await runOpenAISdkExample(prompts);
-    console.log("OpenAI example not implemented yet");
+    await runOpenAISdkExample(prompts);
+    process.exit(1);
   } else if (sampleType === "anthropic-sdk") {
     await runAnthropicAISdkExample(prompts);
-    console.log("Anthropic example not implemented yet");
+    process.exit(1);
   } else {
     console.error(`Unknown SDK type: ${sampleType}`);
     process.exit(1);
