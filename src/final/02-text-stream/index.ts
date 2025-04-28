@@ -1,12 +1,10 @@
-import { generateTextWithVercelAiSdk } from "./vercel-ai-sdk";
-import { generateTextWithAnthropicAiSdk } from "./anthropic-ai-sdk";
-import { generateTextWithOpenAiSdk } from "./open-ai-sdk";
+import { streamTextWithVercelAiSdk } from "./vercel-ai-sdk";
 import { Prompts, parseTextMessages } from "../../common";
 
 export const runVercelAISdkExample = async (prompts: Prompts) => {
   console.log("\nRunning Vercel AI example:");
   try {
-    await generateTextWithVercelAiSdk(prompts);
+    await streamTextWithVercelAiSdk(prompts);
     console.log("Vercel AI example completed successfully");
   } catch (error) {
     console.error("Vercel AI example failed:", error);
@@ -14,24 +12,24 @@ export const runVercelAISdkExample = async (prompts: Prompts) => {
   }
 };
 export const runAnthropicAISdkExample = async (prompts: Prompts) => {
-  console.log("\nRunning Anthropic AI example:");
+  /*console.log("\nRunning Anthropic AI example:");
   try {
-    await generateTextWithAnthropicAiSdk(prompts);
+    await streamTextWithAnthropicAiSdk(prompts);
     console.log("Anthropic AI example completed successfully");
   } catch (error) {
     console.error("Anthropic AI example failed:", error);
     throw error;
-  }
+  }*/
 };
 export const runOpenAISdkExample = async (prompts: Prompts) => {
-  console.log("\nRunning Open AI example:");
+  /*console.log("\nRunning Open AI example:");
   try {
-    await generateTextWithOpenAiSdk(prompts);
+    await streamTextWithOpenAiSdk(prompts);
     console.log("Open AI example completed successfully");
   } catch (error) {
     console.error("Open AI example failed:", error);
     throw error;
-  }
+  }*/
 };
 
 async function main(prompts: Prompts, sampleType?: string) {
@@ -65,9 +63,6 @@ const prompts: Prompts = {
   messages: parseTextMessages(messageArgs),
   systemPrompt: system,
 };
-console.log("Prompts:->");
-console.dir(prompts, { depth: 3 });
-console.log("<-Prompts");
 
 // Get the SDK file from command line arguments
 const sdkFile = process.argv[2];
