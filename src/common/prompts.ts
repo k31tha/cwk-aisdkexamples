@@ -1,6 +1,10 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+export interface MessageMinusSystem {
+  role: "user" | "assistant";
+  content: string;
+}
 export interface Message {
   role: "user" | "assistant" | "system";
   content: string;

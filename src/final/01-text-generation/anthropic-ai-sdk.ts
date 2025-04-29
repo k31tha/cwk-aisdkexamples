@@ -2,8 +2,7 @@ import dotenv from "dotenv";
 import {
   anthropicAi,
   anthropicAiModelName,
-  Message,
-  parseTextMessages,
+  MessageMinusSystem,
   Prompts,
 } from "../../common";
 dotenv.config();
@@ -12,7 +11,7 @@ export const generateTextWithAnthropicAiSdk = async (prompts: Prompts) => {
   const response = await anthropicAi.messages.create({
     model: anthropicAiModelName,
     max_tokens: 1000,
-    messages: prompts.messages as any,
+    messages: prompts.messages as MessageMinusSystem[],
     ...(prompts.systemPrompt && { system: prompts.systemPrompt }),
   });
 

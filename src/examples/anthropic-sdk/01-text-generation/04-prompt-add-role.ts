@@ -4,6 +4,7 @@ import {
   anthropicAi,
   anthropicAiModelName,
   Message,
+  MessageMinusSystem,
   parseTextMessages,
 } from "../../../common";
 
@@ -25,7 +26,7 @@ const main = async (
   const response = await anthropicAi.messages.create({
     model: anthropicAiModelName,
     max_tokens: 1000,
-    messages,
+    messages: messages as MessageMinusSystem[],
     ...(system && { system }),
   });
   console.dir(await response, { depth: 3 });
