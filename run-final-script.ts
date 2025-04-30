@@ -39,7 +39,7 @@ const finalDirs = fs
   .filter((dirent) => dirent.isDirectory())
   .map((dirent) => dirent.name);
 
-console.log("Available directories:", finalDirs);
+//console.log("Available directories:", finalDirs);
 
 if (dirArg.includes("-")) {
   const [parent, child] = dirArg.split("-");
@@ -56,7 +56,7 @@ if (dirArg.includes("-")) {
   const targetDir = finalDirs.find((dir) => dir.startsWith(dirArg));
   if (targetDir) {
     matchingDir = path.join(finalPath, targetDir, "index.ts");
-    console.log("Found matching directory:", targetDir);
+    //console.log("Found matching directory:", targetDir);
   }
 }
 

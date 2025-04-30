@@ -1,0 +1,1 @@
+pnpm tsx run-final-script.ts V|A|O 03 system "show the answer as if your are a football commentator answering" user "what clubs are in the English premier league in season 2024/25" assistant "output the answer conforming to the structure mentioned"
