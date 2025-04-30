@@ -1,7 +1,7 @@
 import { streamTextWithVercelAiSdk } from "./vercel-ai-sdk";
 import { Prompts, parseTextMessages } from "../../common";
 import { streamTextWithAnthropicAiSdk } from "./anthropic-ai-sdk";
-
+import { streamTextWithOpenAiSdk } from "./open-ai-sdk";
 export const runVercelAISdkExample = async (prompts: Prompts) => {
   console.log("\nRunning Vercel AI example:");
   try {
@@ -23,14 +23,14 @@ export const runAnthropicAISdkExample = async (prompts: Prompts) => {
   }
 };
 export const runOpenAISdkExample = async (prompts: Prompts) => {
-  /*console.log("\nRunning Open AI example:");
+  console.log("\nRunning Open AI example:");
   try {
     await streamTextWithOpenAiSdk(prompts);
     console.log("Open AI example completed successfully");
   } catch (error) {
     console.error("Open AI example failed:", error);
     throw error;
-  }*/
+  }
 };
 
 async function main(prompts: Prompts, sampleType?: string) {
