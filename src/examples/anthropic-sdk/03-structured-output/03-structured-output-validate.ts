@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import { z } from "zod";
 
 import {
   anthropicAi,
@@ -6,6 +7,8 @@ import {
   Message,
   MessageMinusSystem,
   parseTextMessages,
+  StructuredResponse,
+  FootballClubs,
 } from "../../../common";
 
 dotenv.config();
@@ -29,10 +32,18 @@ const main = async (
     messages: messages as MessageMinusSystem[],
     ...(system && { system }),
   });
-  console.log("Response:");
-  console.dir(await response, { depth: 3 });
-  console.log("Tokens used:");
-  console.log(response.usage);
+
+  const content = response.content[0];
+  if (content.type === "text") {
+    const result = FootballClubs.safeParse(JSON.parse(content.text));
+    if (!result.success) {
+      console.error("Invalid response:", result.error);
+    } else {
+      console.log("Valid response:", result.data);
+    }
+  } else {
+    console.error("Invalid content:", content);
+  }
 };
 
 // Get the system parameter from environment variable or command line arguments
