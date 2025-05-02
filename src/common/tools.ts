@@ -1,6 +1,7 @@
 import { tool } from "ai";
 import { z } from "zod";
 import Anthropic from "@anthropic-ai/sdk";
+import { Responses } from "openai/resources/index";
 
 export const getBasicWeatherTool = tool({
   description:
@@ -66,5 +67,31 @@ export const toolsForAnthropic: Anthropic.Tool[] = [
       },
       required: ["location"],
     },
+  },
+];
+
+export const toolsForOpenAI: Responses.Tool[] = [
+  {
+    type: "function",
+    name: "get_weather",
+    description:
+      "Get current temperature for provided location in specified unit.",
+    parameters: {
+      type: "object",
+      properties: {
+        location: {
+          type: "string",
+          description: "The city and state, e.g., San Francisco, CA",
+        },
+        unit: {
+          type: "string",
+          enum: ["celsius", "fahrenheit"],
+          description: "The unit of temperature to use",
+        },
+      },
+      required: ["location", "unit"],
+      additionalProperties: false,
+    },
+    strict: true,
   },
 ];

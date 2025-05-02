@@ -1,6 +1,7 @@
 import { generateOutputUsingToolsWithVercelAiSdk } from "./vercel-ai-sdk";
 import { Prompts, parseTextMessages } from "../../common";
 import { generateOutputUsingToolsWithAnthropicAiSdk } from "./anthropic-ai-sdk";
+import { generateOutputUsingToolsWithOpenAiSdk } from "./open-ai-sdk";
 
 export const runVercelAISdkExample = async (prompts: Prompts) => {
   console.log("\nRunning Vercel AI example:");
@@ -25,7 +26,7 @@ export const runAnthropicAISdkExample = async (prompts: Prompts) => {
 export const runOpenAISdkExample = async (prompts: Prompts) => {
   console.log("\nRunning Open AI example:");
   try {
-    //await generateOutputUsingToolsWithOpenAiSdk(prompts);
+    await generateOutputUsingToolsWithOpenAiSdk(prompts);
     console.log("Open AI example completed successfully");
   } catch (error) {
     console.error("Open AI example failed:", error);

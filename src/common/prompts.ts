@@ -10,6 +10,16 @@ export interface Message {
   content: string;
 }
 
+export type MessageIncToolCall =
+  | Message
+  | {
+      //role: "user" | "assistant" | "system";
+      //content: string;
+      type?: "function_call_output";
+      call_id?: string;
+      output?: string;
+    };
+
 export const parseTextMessages = (args?: string[]): Message[] => {
   const messageArgs =
     args ||
