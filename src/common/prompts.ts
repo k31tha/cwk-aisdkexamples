@@ -257,7 +257,9 @@ export const convertMessageTextToMediaForAnthropic = (
               source: {
                 type: "base64",
                 data: fs.readFileSync(mediaPath).toString("base64"),
-                media_type: "image/png",
+                media_type: mediaPath.endsWith(".png")
+                  ? "image/png"
+                  : "image/jpeg",
               },
             },
           ],
