@@ -15,6 +15,10 @@ export type MessageVercelTextContent = {
   type: "text";
   text: string;
 };
+export type MessageOpenAiTextContent = {
+  type: "input_text";
+  text: string;
+};
 
 export type MessageAnthropicTextContent = {
   type: "text";
@@ -24,6 +28,18 @@ export type MessageAnthropicTextContent = {
 export type MessageVercelImageContent = {
   type: "image";
   image: Buffer;
+};
+
+export type MessageOpenAiImageContent = {
+  type: "input_image";
+  image_url: string;
+  detail: "high";
+};
+
+export type MessageOpenAiFileContent = {
+  type: "input_file";
+  filename: string;
+  file_data: string;
 };
 
 export type MessageAnthropicImageContent = {
@@ -60,6 +76,15 @@ export type MessageAnthropicContent =
   | MessageAnthropicImageContent
   | MessageAnthropicFileContent;
 
+export type MessageOpenAiContent =
+  | MessageOpenAiTextContent
+  | MessageOpenAiImageContent
+  | MessageOpenAiFileContent;
+
+export type MessageOpenAiUser = {
+  role: "user";
+  content: string | MessageOpenAiContent[];
+};
 export type MessageVercelUser = {
   role: "user";
   content: string | MessageVercelContent[];
@@ -79,6 +104,15 @@ export type MessageVercelSystem = {
   content: string;
 };
 
+export type MessageOpenAiAssistant = {
+  role: "assistant";
+  content: string;
+};
+export type MessageOpenAiSystem = {
+  role: "system";
+  content: string;
+};
+
 export type MessageAnthropicAssistant = {
   role: "assistant";
   content: string;
@@ -88,6 +122,11 @@ export type MessageAnthropicSystem = {
   role: "system";
   content: string;
 };
+
+export type MessageOpenAi =
+  | MessageOpenAiUser
+  | MessageOpenAiAssistant
+  | MessageOpenAiSystem;
 
 export type MessageAnthropic = MessageAnthropicUser | MessageAnthropicAssistant;
 //| MessageAnthropicSystem;
@@ -106,6 +145,52 @@ export type MessageIncToolCall =
       call_id?: string;
       output?: string;
     };
+
+export const convertMessageTextToMediaForOpenAi = (
+  messages: Message[]
+): MessageOpenAi[] => {
+  return messages.map((message) => {
+    if (message.role === "user" && message.content.includes("^media:")) {
+      const mediaPath = message.content.split("^media:")[1].split("^")[0];
+      const textContent = message.content
+        .replace(`^media:${mediaPath}^`, "")
+        .trim();
+      console.log("mediaPath", mediaPath);
+      if (
+        mediaPath.endsWith(".png") ||
+        mediaPath.endsWith(".jpg") ||
+        mediaPath.endsWith(".jpeg")
+      ) {
+        const base64Image = fs.readFileSync(mediaPath).toString("base64");
+        return {
+          role: "user",
+          content: [
+            { type: "input_text", text: textContent },
+            {
+              type: "input_image",
+              image_url: `data:image/jpeg;base64,${base64Image}`,
+              detail: "high",
+            },
+          ],
+        };
+      } else if (mediaPath.endsWith(".pdf")) {
+        const base64File = fs.readFileSync(mediaPath).toString("base64");
+        return {
+          role: "user",
+          content: [
+            { type: "input_text", text: textContent },
+            {
+              type: "input_file",
+              filename: mediaPath,
+              file_data: `data:application/pdf;base64,${base64File}`,
+            },
+          ],
+        };
+      }
+    }
+    return message;
+  });
+};
 
 export const convertMessageTextToMediaForVercel = (
   messages: Message[]
@@ -149,7 +234,8 @@ export const convertMessageTextToMediaForVercel = (
 
 export const convertMessageTextToMediaForAnthropic = (
   messages: MessageMinusSystem[]
-): any => { //MessageAnthropic[] TODO: fix any
+): any => {
+  //MessageAnthropic[] TODO: fix any
   return messages.map((message) => {
     if (message.role === "user" && message.content.includes("^media:")) {
       const mediaPath = message.content.split("^media:")[1].split("^")[0];
