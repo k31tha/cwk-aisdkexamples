@@ -149,7 +149,8 @@ export const convertMessageTextToMediaForVercel = (
 
 export const convertMessageTextToMediaForAnthropic = (
   messages: MessageMinusSystem[]
-): any => { //MessageAnthropic[] TODO: fix any
+): any => {
+  //MessageAnthropic[] TODO: fix any
   return messages.map((message) => {
     if (message.role === "user" && message.content.includes("^media:")) {
       const mediaPath = message.content.split("^media:")[1].split("^")[0];
@@ -171,7 +172,9 @@ export const convertMessageTextToMediaForAnthropic = (
               source: {
                 type: "base64",
                 data: fs.readFileSync(mediaPath).toString("base64"),
-                media_type: "image/png",
+                media_type: mediaPath.endsWith(".png")
+                  ? "image/png"
+                  : "image/jpeg",
               },
             },
           ],
