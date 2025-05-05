@@ -16,9 +16,23 @@ export type MessageVercelTextContent = {
   text: string;
 };
 
+export type MessageAnthropicTextContent = {
+  type: "text";
+  content: string;
+};
+
 export type MessageVercelImageContent = {
   type: "image";
   image: Buffer;
+};
+
+export type MessageAnthropicImageContent = {
+  type: "image";
+  source: {
+    type: "base64";
+    data: Buffer;
+    media_type: "image/png" | "image/jpeg" | "image/jpg";
+  };
 };
 
 export type MessageVercelFileContent = {
@@ -27,14 +41,32 @@ export type MessageVercelFileContent = {
   mimeType: string;
 };
 
+export type MessageAnthropicFileContent = {
+  type: "document";
+  source: {
+    type: "base64";
+    data: Buffer;
+    media_type: "application/pdf";
+  };
+};
+
 export type MessageVercelContent =
   | MessageVercelTextContent
   | MessageVercelImageContent
   | MessageVercelFileContent;
 
+export type MessageAnthropicContent =
+  | MessageAnthropicTextContent
+  | MessageAnthropicImageContent
+  | MessageAnthropicFileContent;
+
 export type MessageVercelUser = {
   role: "user";
   content: string | MessageVercelContent[];
+};
+export type MessageAnthropicUser = {
+  role: "user";
+  content: string | MessageAnthropicContent[];
 };
 
 export type MessageVercelAssistant = {
@@ -46,6 +78,19 @@ export type MessageVercelSystem = {
   role: "system";
   content: string;
 };
+
+export type MessageAnthropicAssistant = {
+  role: "assistant";
+  content: string;
+};
+
+export type MessageAnthropicSystem = {
+  role: "system";
+  content: string;
+};
+
+export type MessageAnthropic = MessageAnthropicUser | MessageAnthropicAssistant;
+//| MessageAnthropicSystem;
 
 export type MessageVercel =
   | MessageVercelUser
@@ -99,6 +144,66 @@ export const convertMessageTextToMediaForVercel = (
       }
     }
     return message;
+  });
+};
+
+export const convertMessageTextToMediaForAnthropic = (
+  messages: MessageMinusSystem[]
+): any => { //MessageAnthropic[] TODO: fix any
+  return messages.map((message) => {
+    if (message.role === "user" && message.content.includes("^media:")) {
+      const mediaPath = message.content.split("^media:")[1].split("^")[0];
+      const textContent = message.content
+        .replace(`^media:${mediaPath}^`, "")
+        .trim();
+      //console.log("mediaPath", mediaPath);
+      if (
+        mediaPath.endsWith(".png") ||
+        mediaPath.endsWith(".jpg") ||
+        mediaPath.endsWith(".jpeg")
+      ) {
+        return {
+          role: "user",
+          content: [
+            { type: "text", text: textContent },
+            {
+              type: "image",
+              source: {
+                type: "base64",
+                data: fs.readFileSync(mediaPath).toString("base64"),
+                media_type: "image/png",
+              },
+            },
+          ],
+        };
+      } else if (mediaPath.endsWith(".pdf")) {
+        return {
+          role: "user",
+          content: [
+            { type: "text", text: textContent },
+            {
+              type: "document",
+              source: {
+                type: "base64",
+                data: fs.readFileSync(mediaPath).toString("base64"),
+                media_type: "application/pdf",
+              },
+            },
+          ],
+        };
+      }
+    } else if (message.role === "assistant") {
+      return {
+        role: "assistant",
+        content: message.content!,
+      } as MessageAnthropicAssistant;
+    } else if (message.role === "user") {
+      return {
+        role: "user",
+        content: message.content!,
+      } as MessageAnthropicUser;
+    }
+    throw new Error("Unknown message role: " + message.role);
   });
 };
 export const parseTextMessages = (args?: string[]): Message[] => {

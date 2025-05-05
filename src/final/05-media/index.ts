@@ -1,4 +1,5 @@
 import { Prompts, parseTextMessages } from "../../common";
+import { generateTextUsingMediaWithAnthropicAiSdk } from "./anthropic-ai-sdk";
 import { generateTextUsingMediaWithVercelAiSdk } from "./vercel-ai-sdk";
 
 export const runVercelAISdkExample = async (prompts: Prompts) => {
@@ -14,7 +15,7 @@ export const runVercelAISdkExample = async (prompts: Prompts) => {
 export const runAnthropicAISdkExample = async (prompts: Prompts) => {
   console.log("\nRunning Anthropic AI example:");
   try {
-    //await generateOutputUsingToolsWithAnthropicAiSdk(prompts);
+    await generateTextUsingMediaWithAnthropicAiSdk(prompts);
     console.log("Anthropic AI example completed successfully");
   } catch (error) {
     console.error("Anthropic AI example failed:", error);
