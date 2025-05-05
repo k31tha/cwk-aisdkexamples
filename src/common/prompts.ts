@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import fs from "fs";
 dotenv.config();
 
 export interface MessageMinusSystem {
@@ -10,6 +11,47 @@ export interface Message {
   content: string;
 }
 
+export type MessageVercelTextContent = {
+  type: "text";
+  text: string;
+};
+
+export type MessageVercelImageContent = {
+  type: "image";
+  image: Buffer;
+};
+
+export type MessageVercelFileContent = {
+  type: "file";
+  data: Buffer;
+  mimeType: string;
+};
+
+export type MessageVercelContent =
+  | MessageVercelTextContent
+  | MessageVercelImageContent
+  | MessageVercelFileContent;
+
+export type MessageVercelUser = {
+  role: "user";
+  content: string | MessageVercelContent[];
+};
+
+export type MessageVercelAssistant = {
+  role: "assistant";
+  content: string;
+};
+
+export type MessageVercelSystem = {
+  role: "system";
+  content: string;
+};
+
+export type MessageVercel =
+  | MessageVercelUser
+  | MessageVercelAssistant
+  | MessageVercelSystem;
+
 export type MessageIncToolCall =
   | Message
   | {
@@ -20,6 +62,45 @@ export type MessageIncToolCall =
       output?: string;
     };
 
+export const convertMessageTextToMediaForVercel = (
+  messages: Message[]
+): MessageVercel[] => {
+  return messages.map((message) => {
+    if (message.role === "user" && message.content.includes("^media:")) {
+      const mediaPath = message.content.split("^media:")[1].split("^")[0];
+      const textContent = message.content
+        .replace(`^media:${mediaPath}^`, "")
+        .trim();
+      console.log("mediaPath", mediaPath);
+      if (
+        mediaPath.endsWith(".png") ||
+        mediaPath.endsWith(".jpg") ||
+        mediaPath.endsWith(".jpeg")
+      ) {
+        return {
+          role: "user",
+          content: [
+            { type: "text", text: textContent },
+            { type: "image", image: fs.readFileSync(mediaPath) },
+          ],
+        };
+      } else if (mediaPath.endsWith(".pdf")) {
+        return {
+          role: "user",
+          content: [
+            { type: "text", text: textContent },
+            {
+              type: "file",
+              data: fs.readFileSync(mediaPath),
+              mimeType: "application/pdf",
+            },
+          ],
+        };
+      }
+    }
+    return message;
+  });
+};
 export const parseTextMessages = (args?: string[]): Message[] => {
   const messageArgs =
     args ||
