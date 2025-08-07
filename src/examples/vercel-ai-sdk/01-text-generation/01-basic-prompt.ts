@@ -1,4 +1,6 @@
 import { generateText } from "ai";
+//import type { Message } from "ai";
+//type MessagePart = NonNullable<Message["parts"]>[number];
 import { anthropic } from "@ai-sdk/anthropic";
 import dotenv from "dotenv";
 import { anthropicAiModelName } from "../../../common";

@@ -6,9 +6,9 @@ import { spawnSync } from "child_process";
 const exampleSDK: string | undefined = process.argv[2]?.toUpperCase();
 const dirArg: string = process.argv[3];
 
-if (!exampleSDK || !["O", "A", "V"].includes(exampleSDK)) {
+if (!exampleSDK || !["O", "A", "V", "G"].includes(exampleSDK)) {
   console.error(
-    "Please provide a valid SDK type as the first argument: O (OpenAI), A (Anthropic), or V (VercelAI)"
+    "Please provide a valid SDK type as the first argument: O (OpenAI), A (Anthropic), V (VercelAI), or G (Gemini)"
   );
   process.exit(1);
 }
@@ -25,6 +25,7 @@ const sdkDirectories: Record<string, string> = {
   V: "vercel-ai-sdk",
   O: "openai-sdk",
   A: "anthropic-sdk",
+  G: "gemini-sdk",
 };
 
 // The base directory where the example directories are located
